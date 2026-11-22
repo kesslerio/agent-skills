@@ -1,0 +1,9 @@
+{
+  "name": "meme-maker",
+  "version": "1.0.0",
+  "description": "Local meme-maker template renderer",
+  "private": true,
+  "dependencies": {
+    "sharp": "^0.33.5"
+  }
+}
