@@ -31,7 +31,7 @@ Commands
 
 Template registry
 
-- Read `{baseDir}/references/templates.json` for the curated 20-template registry.
+- Read `{baseDir}/references/templates.json` for the curated 36-template registry.
 - Each entry includes Imgflip metadata, Know Your Meme link, aliases, tags, fields, and local text placement boxes.
 - Prefer `suggest` first when the user describes a joke but does not know the format.
 

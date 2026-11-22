@@ -15,6 +15,7 @@ import { existsSync } from "node:fs";
 import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { fileURLToPath } from "node:url";
 
 const BASE_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -189,7 +190,7 @@ function escapeXml(value) {
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
+    .replaceAll('"', "&quot;").replaceAll("'", "&apos;");
 }
 
 function wrapText(text, maxChars) {
@@ -230,7 +231,7 @@ function textSvg(text, box, width, height, index) {
   );
   const lineHeight = fontSize * 1.08;
   const totalHeight = lineHeight * lines.length;
-  const rotate = box.rotate ? ` rotate(${box.rotate} ${centerX} ${centerY})` : "";
+  const rotate = box.rotate ? ` rotate(${box.rotate} ${centerX.toFixed(1)} 0)` : "";
   lines = lines.map((line) => escapeXml(line.toUpperCase()));
   const tspans = lines
     .map((line, lineIndex) => {
@@ -405,7 +406,12 @@ async function main() {
   usage(1);
 }
 
-main().catch((error) => {
-  console.error(`error: ${error.message}`);
-  process.exit(1);
-});
+export { escapeXml, wrapText, textSvg, defaultBoxes };
+
+const isMain = process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href;
+if (isMain) {
+  main().catch((error) => {
+    console.error(`error: ${error.message}`);
+    process.exit(1);
+  });
+}
